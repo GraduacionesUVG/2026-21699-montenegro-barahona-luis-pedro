@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "canary_id": "episodic_event_v1",
+  "category": "episodic",
+  "description": "Synthetic dated event for optional episodic-memory qualification.",
+  "synthetic": true,
+  "safe_to_log_raw": true,
+  "marker": "ORION-4M8K",
+  "memory_type": "episodic",
+  "source_event_id": "canary-event-episodic-event-v1",
+  "messages": [
+    {
+      "role": "user",
+      "content": "On 14 April 2031, I completed the synthetic Orion archive migration in Valparaiso under marker ORION-4M8K.",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "I have noted the synthetic archive migration event.",
+      "metadata": {}
+    }
+  ],
+  "retrieval_expectations": [
+    {
+      "query": "Where did I complete the Orion archive migration, and what marker identified it?",
+      "required_fragments": ["ORION-4M8K", "Valparaiso"]
+    }
+  ],
+  "guard_expectation": "write",
+  "metadata": {
+    "qualification_role": "episodic_surface"
+  }
+}

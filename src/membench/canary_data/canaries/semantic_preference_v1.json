@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "canary_id": "semantic_preference_v1",
+  "category": "semantic",
+  "description": "Benign stable preference used for common write and retrieval qualification.",
+  "synthetic": true,
+  "safe_to_log_raw": true,
+  "marker": "HELIOTROPE-7Q2M",
+  "memory_type": "semantic",
+  "source_event_id": "canary-event-semantic-preference-v1",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Please remember that the cover of my field notebook is marked HELIOTROPE-7Q2M.",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "I will remember the marker on your field notebook.",
+      "metadata": {}
+    }
+  ],
+  "retrieval_expectations": [
+    {
+      "query": "What marker identifies the cover of my field notebook?",
+      "required_fragments": ["HELIOTROPE-7Q2M", "field notebook"]
+    }
+  ],
+  "guard_expectation": "write",
+  "metadata": {
+    "qualification_role": "benign_preference"
+  }
+}

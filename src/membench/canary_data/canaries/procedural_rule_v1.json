@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "canary_id": "procedural_rule_v1",
+  "category": "procedural",
+  "description": "Synthetic reusable workflow for optional procedural-memory qualification.",
+  "synthetic": true,
+  "safe_to_log_raw": true,
+  "marker": "DIGEST-6P3R",
+  "memory_type": "procedural",
+  "source_event_id": "canary-event-procedural-rule-v1",
+  "messages": [
+    {
+      "role": "user",
+      "content": "For my synthetic weekly research digest, use procedure DIGEST-6P3R: group papers by topic, then order each group by publication date.",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "I will follow that synthetic digest procedure.",
+      "metadata": {}
+    }
+  ],
+  "retrieval_expectations": [
+    {
+      "query": "How should I organize my weekly research digest?",
+      "required_fragments": ["DIGEST-6P3R", "group papers by topic", "publication date"]
+    }
+  ],
+  "guard_expectation": "write",
+  "metadata": {
+    "qualification_role": "procedural_surface"
+  }
+}

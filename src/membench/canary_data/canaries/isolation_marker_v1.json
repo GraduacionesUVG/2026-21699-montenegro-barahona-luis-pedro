@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "canary_id": "isolation_marker_v1",
+  "category": "isolation",
+  "description": "Distinct record written only into a secondary scope during isolation checks.",
+  "synthetic": true,
+  "safe_to_log_raw": true,
+  "marker": "ISOLATION-9K4P",
+  "memory_type": "semantic",
+  "source_event_id": "canary-event-isolation-marker-v1",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Store this marker only for this synthetic qualification identity: ISOLATION-9K4P.",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "I will associate it only with this synthetic identity.",
+      "metadata": {}
+    }
+  ],
+  "retrieval_expectations": [
+    {
+      "query": "What isolation marker belongs to this qualification identity?",
+      "required_fragments": ["ISOLATION-9K4P"]
+    }
+  ],
+  "guard_expectation": "write",
+  "metadata": {
+    "qualification_role": "secondary_scope_isolation"
+  }
+}
