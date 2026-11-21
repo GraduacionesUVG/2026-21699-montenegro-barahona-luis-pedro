@@ -1,0 +1,53 @@
+schema_version: 1
+experiment_track: blackbox_memory_poisoning
+
+dataset:
+  name: personamem_v2
+  revision: ed956dea41521fc4499acbc63f966e0fd3c053ba
+  subset: blackbox_battery_v1
+
+condition:
+  mechanism: telemem
+  mechanism_version: 1.10.0
+  write_policy: native_selective
+  mechanism_options:
+    infer: true
+    buffer_size: 64
+    similarity_threshold: 0.95
+    rerank: false
+
+models:
+  # Digests are resolved from the endpoint before an executable run is accepted.
+  writer: {provider: ollama, model: "qwen2.5:7b"}
+  responder:
+    provider: ollama
+    model: "qwen2.5:7b"
+    tokenizer:
+      implementation: huggingface_auto
+      model_id: Qwen/Qwen2.5-7B-Instruct
+      revision: a09a35458c702b33eeacc393d103063234e8bc28
+      transformers_version: 4.57.6
+      use_fast: true
+  embedding:
+    provider: ollama
+    model: "nomic-embed-text:137m-v1.5-fp16"
+    dimensions: 768
+
+retrieval:
+  top_k: 5
+  threshold: null
+  context_token_budget: 2048
+
+attack:
+  knowledge: black_box
+  delivery: conversation
+  battery: pmv2_blackbox_battery_v1
+  attack_id: bb-pi-001
+
+isolation:
+  run_id: example-do-not-execute
+  config_ref: planning/config.md
+
+replication:
+  seed: 20260831
+  response_replicates: 1

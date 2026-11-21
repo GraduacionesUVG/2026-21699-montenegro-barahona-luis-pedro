@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "projection_set_id": "pmv2-neutral-external-hosts-v1",
+  "hosts": [
+    {
+      "schema_version": 1,
+      "persona_id": "277",
+      "source_case_id": "alloc-abrupt-false-correction-005",
+      "host_case_id": "alloc-neutral-external-host-277-001"
+    },
+    {
+      "schema_version": 1,
+      "persona_id": "371",
+      "source_case_id": "alloc-abrupt-false-correction-003",
+      "host_case_id": "alloc-neutral-external-host-371-001"
+    },
+    {
+      "schema_version": 1,
+      "persona_id": "436",
+      "source_case_id": "alloc-abrupt-false-correction-002",
+      "host_case_id": "alloc-neutral-external-host-436-001"
+    }
+  ]
+}

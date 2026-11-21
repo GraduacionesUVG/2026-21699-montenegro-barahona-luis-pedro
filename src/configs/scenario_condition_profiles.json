@@ -1,0 +1,1783 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "profile_id": "telemem-native-qwen25",
+      "condition": {
+        "mechanism": "telemem",
+        "mechanism_version": "1.10.0",
+        "write_policy": "native_selective",
+        "mechanism_options": {
+          "infer": true,
+          "buffer_size": 64,
+          "similarity_threshold": 0.95,
+          "rerank": false
+        }
+      },
+      "execution_condition": {
+        "condition_id": "telemem-native-qwen25",
+        "model_profile_id": "qwen25-nomic-v1",
+        "manifest_template": {
+          "schema_version": 1,
+          "experiment_track": "blackbox_memory_poisoning",
+          "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+          },
+          "condition": {
+            "mechanism": "telemem",
+            "mechanism_version": "1.10.0",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+              "infer": true,
+              "buffer_size": 64,
+              "similarity_threshold": 0.95,
+              "rerank": false
+            }
+          },
+          "models": {
+            "writer": {
+              "provider": "ollama",
+              "model": "qwen2.5:7b",
+              "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"
+            },
+            "responder": {
+              "provider": "ollama",
+              "model": "qwen2.5:7b",
+              "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+              "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "Qwen/Qwen2.5-7B-Instruct",
+                "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+              }
+            },
+            "embedding": {
+              "provider": "ollama",
+              "model": "nomic-embed-text:137m-v1.5-fp16",
+              "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+              "dimensions": 768
+            }
+          },
+          "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+          },
+          "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+          },
+          "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+          },
+          "replication": {
+            "seed": 42,
+            "response_replicates": 1
+          }
+        },
+        "agent_configuration": {
+          "max_steps": 2,
+          "max_tool_calls": 1,
+          "retrieval_top_k": 5,
+          "retrieval_threshold": null,
+          "allowed_tools": ["simulate_send"],
+          "approval_required_tools": ["simulate_send"],
+          "context_token_budget": 2048,
+          "memory_read_only": true,
+          "allow_external_side_effects": false,
+          "stop_on_tool_error": true
+        },
+        "replay": {
+          "batching": "user_turn_v1",
+          "native_options": {}
+        }
+      },
+      "environment": {
+        "mechanism": "telemem",
+        "python_executable": ".venvs/telemem/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": ["AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]
+      }
+    },
+    {
+        "profile_id": "telemem-direct-qwen25",
+        "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+        "execution_condition" : {
+                
+        "condition_id": "telemem-direct-qwen25",
+        "model_profile_id": "qwen25-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {"name": "personamem_v2", "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba", "subset": "blackbox_battery_v1"},
+            "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+            "models": {
+            "writer": {"provider": "ollama", "model": "qwen2.5:7b", "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"},
+            "responder": {"provider": "ollama", "model": "qwen2.5:7b", "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e", "tokenizer": {"implementation": "huggingface_auto", "model_id": "Qwen/Qwen2.5-7B-Instruct", "revision": "a09a35458c702b33eeacc393d103063234e8bc28", "transformers_version": "4.57.6", "use_fast": true}},
+            "embedding": {"provider": "ollama", "model": "nomic-embed-text:137m-v1.5-fp16", "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f", "dimensions": 768}
+            },
+            "retrieval": {"top_k": 5, "threshold": null, "context_token_budget": 2048},
+            "attack": {"knowledge": "black_box", "delivery": "conversation", "battery": "pmv2_blackbox_battery_v1", "attack_id": "bb-pi-001"},
+            "isolation": {"run_id": "template-do-not-execute", "config_ref": "planning/config.md"},
+            "replication": {"seed": 42, "response_replicates": 1}
+        },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {"mechanism": "telemem", "python_executable": ".venvs/telemem/Scripts/python.exe", "module": "membench.agent", "working_directory": ".", "timeout_seconds": 1800, "inherited_env_keys": ["AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]}
+    },
+    {
+        "profile_id": "langmem-native-qwen25",
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "native_selective",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "execution_condition" : {
+        "condition_id": "langmem-native-qwen25",
+        "model_profile_id": "qwen25-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+            },
+            "condition": {
+            "mechanism": "langmem",
+            "mechanism_version": "0.0.30",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+                "writer_implementation": "langmem_store_manager_v1",
+                "writer_version": "0.0.30",
+                "memory_types": [
+                "semantic"
+                ],
+                "procedural_prompt_optimization": false,
+                "storage_backend": "sqlite",
+                "enable_deletes": false,
+                "query_limit": 5,
+                "max_steps": 1,
+                "temperature": 0,
+                "seed": 42
+            }
+            },
+            "models": {
+            "writer": {
+                "provider": "ollama",
+                "model": "qwen2.5:7b",
+                "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"
+            },
+            "responder": {
+                "provider": "ollama",
+                "model": "qwen2.5:7b",
+                "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+                "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "Qwen/Qwen2.5-7B-Instruct",
+                "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+                }
+            },
+            "embedding": {
+                "provider": "ollama",
+                "model": "nomic-embed-text:137m-v1.5-fp16",
+                "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+                "dimensions": 768
+            }
+            },
+            "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+            },
+            "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+            },
+            "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+            },
+            "replication": {
+            "seed": 42,
+            "response_replicates": 1
+            }
+        },
+            "agent_configuration": {
+            "max_steps": 2,
+            "max_tool_calls": 1,
+            "retrieval_top_k": 5,
+            "retrieval_threshold": null,
+            "allowed_tools": ["simulate_send"],
+            "approval_required_tools": ["simulate_send"],
+            "context_token_budget": 2048,
+            "memory_read_only": true,
+            "allow_external_side_effects": false,
+            "stop_on_tool_error": true
+            },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [
+            "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+            "AGENT_DECIDER_OLLAMA_BASE_URL",
+            "AGENT_DECIDER_TEMPERATURE",
+            "AGENT_DECIDER_TIMEOUT_SECONDS",
+            "LANGMEM_EMBEDDING_PROVIDER",
+            "LANGMEM_PROVIDER",
+            "LANGMEM_SQLITE_ROOT",
+            "LANGMEM_STORAGE_BACKEND",
+            "LANGMEM_TIMEOUT_SECONDS",
+            "OLLAMA_BASE_URL",
+            "RESPONDER_TOKENIZER_CACHE_DIR",
+            "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"
+        ]
+        }
+    },
+    {
+      "profile_id": "langmem-direct-qwen25",
+      "condition": {
+        "mechanism": "langmem",
+        "mechanism_version": "0.0.30",
+        "write_policy": "direct",
+        "mechanism_options": {
+          "writer_implementation": "langmem_store_manager_v1",
+          "writer_version": "0.0.30",
+          "memory_types": [
+          "semantic"
+          ],
+          "procedural_prompt_optimization": false,
+          "storage_backend": "sqlite",
+          "enable_deletes": false,
+          "query_limit": 5,
+          "max_steps": 1,
+          "temperature": 0,
+          "seed": 42
+        }
+      },
+      "execution_condition": {
+      "condition_id": "langmem-direct-qwen25",
+      "model_profile_id": "qwen25-nomic-v1",
+      "manifest_template": {
+        "schema_version": 1,
+        "experiment_track": "blackbox_memory_poisoning",
+        "dataset": {
+          "name": "personamem_v2",
+          "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+          "subset": "blackbox_battery_v1"
+        },
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "direct",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "models": {
+          "writer": {
+            "provider": "ollama",
+            "model": "qwen2.5:7b",
+            "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"
+          },
+          "responder": {
+            "provider": "ollama",
+            "model": "qwen2.5:7b",
+            "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+            "tokenizer": {
+              "implementation": "huggingface_auto",
+              "model_id": "Qwen/Qwen2.5-7B-Instruct",
+              "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+              "transformers_version": "4.57.6",
+              "use_fast": true
+            }
+          },
+          "embedding": {
+            "provider": "ollama",
+            "model": "nomic-embed-text:137m-v1.5-fp16",
+            "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+            "dimensions": 768
+          }
+        },
+        "retrieval": {
+          "top_k": 5,
+          "threshold": null,
+          "context_token_budget": 2048
+        },
+        "attack": {
+          "knowledge": "black_box",
+          "delivery": "conversation",
+          "battery": "pmv2_blackbox_battery_v1",
+          "attack_id": "bb-pi-001"
+        },
+        "isolation": {
+          "run_id": "template-do-not-execute",
+          "config_ref": "planning/config.md"
+        },
+        "replication": {
+          "seed": 42,
+          "response_replicates": 1
+        }
+      },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+      "replay": {"batching": "user_turn_v1", "native_options": {}}
+    },
+    "environment": 
+        {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [
+                "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+                "AGENT_DECIDER_OLLAMA_BASE_URL",
+                "AGENT_DECIDER_TEMPERATURE",
+                "AGENT_DECIDER_TIMEOUT_SECONDS",
+                "LANGMEM_EMBEDDING_PROVIDER",
+                "LANGMEM_PROVIDER",
+                "LANGMEM_SQLITE_ROOT",
+                "LANGMEM_STORAGE_BACKEND",
+                "LANGMEM_TIMEOUT_SECONDS",
+                "OLLAMA_BASE_URL",
+                "RESPONDER_TOKENIZER_CACHE_DIR",
+                "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"
+            ]
+        }
+
+    },
+    {
+      "profile_id": "langmem-native-mistral-nemo",
+      "condition": {
+        "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "native_selective",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+      },
+      "execution_condition": {
+        "condition_id": "langmem-native-mistral-nemo",
+        "model_profile_id": "mistral-nemo-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+            },
+            "condition": {
+            "mechanism": "langmem",
+            "mechanism_version": "0.0.30",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+                "writer_implementation": "langmem_store_manager_v1",
+                "writer_version": "0.0.30",
+                "memory_types": [
+                "semantic"
+                ],
+                "procedural_prompt_optimization": false,
+                "storage_backend": "sqlite",
+                "enable_deletes": false,
+                "query_limit": 5,
+                "max_steps": 1,
+                "temperature": 0,
+                "seed": 42
+            }
+            },
+            "models": {
+            "writer": {
+                "provider": "ollama",
+                "model": "mistral-nemo:12b",
+                "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89"
+            },
+            "responder": {
+                "provider": "ollama",
+                "model": "mistral-nemo:12b",
+                "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89",
+                "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "mistralai/Mistral-Nemo-Instruct-2407",
+                "revision": "04d8a90549d23fc6bd7f642064003592df51e9b3",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+                }
+            },
+            "embedding": {
+                "provider": "ollama",
+                "model": "nomic-embed-text:137m-v1.5-fp16",
+                "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+                "dimensions": 768
+            }
+            },
+            "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+            },
+            "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+            },
+            "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+            },
+            "replication": {
+            "seed": 42,
+            "response_replicates": 1
+            }
+        },
+            "agent_configuration": {
+            "max_steps": 2,
+            "max_tool_calls": 1,
+            "retrieval_top_k": 5,
+            "retrieval_threshold": null,
+            "allowed_tools": ["simulate_send"],
+            "approval_required_tools": ["simulate_send"],
+            "context_token_budget": 2048,
+            "memory_read_only": true,
+            "allow_external_side_effects": false,
+            "stop_on_tool_error": true
+            },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+      },
+      "environment": {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [
+            "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+            "AGENT_DECIDER_OLLAMA_BASE_URL",
+            "AGENT_DECIDER_TEMPERATURE",
+            "AGENT_DECIDER_TIMEOUT_SECONDS",
+            "LANGMEM_EMBEDDING_PROVIDER",
+            "LANGMEM_PROVIDER",
+            "LANGMEM_SQLITE_ROOT",
+            "LANGMEM_STORAGE_BACKEND",
+            "LANGMEM_TIMEOUT_SECONDS",
+            "OLLAMA_BASE_URL",
+            "RESPONDER_TOKENIZER_CACHE_DIR",
+            "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"
+        ]
+      }
+    },
+    {
+      "profile_id": "langmem-direct-mistral-nemo",
+      "condition": {
+        "mechanism": "langmem",
+        "mechanism_version": "0.0.30",
+        "write_policy": "direct",
+        "mechanism_options": {
+          "writer_implementation": "langmem_store_manager_v1",
+          "writer_version": "0.0.30",
+          "memory_types": [
+          "semantic"
+          ],
+          "procedural_prompt_optimization": false,
+          "storage_backend": "sqlite",
+          "enable_deletes": false,
+          "query_limit": 5,
+          "max_steps": 1,
+          "temperature": 0,
+          "seed": 42
+        }
+      },
+      "execution_condition": {
+        "condition_id": "langmem-direct-mistral-nemo",
+      "model_profile_id": "mistral-nemo-nomic-v1",
+      "manifest_template": {
+        "schema_version": 1,
+        "experiment_track": "blackbox_memory_poisoning",
+        "dataset": {
+          "name": "personamem_v2",
+          "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+          "subset": "blackbox_battery_v1"
+        },
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "direct",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "models": {
+          "writer": {
+            "provider": "ollama",
+            "model": "mistral-nemo:12b",
+            "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89"
+          },
+          "responder": {
+            "provider": "ollama",
+            "model": "mistral-nemo:12b",
+            "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89",
+            "tokenizer": {
+              "implementation": "huggingface_auto",
+              "model_id": "mistralai/Mistral-Nemo-Instruct-2407",
+              "revision": "04d8a90549d23fc6bd7f642064003592df51e9b3",
+              "transformers_version": "4.57.6",
+              "use_fast": true
+            }
+          },
+          "embedding": {
+            "provider": "ollama",
+            "model": "nomic-embed-text:137m-v1.5-fp16",
+            "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+            "dimensions": 768
+          }
+        },
+        "retrieval": {
+          "top_k": 5,
+          "threshold": null,
+          "context_token_budget": 2048
+        },
+        "attack": {
+          "knowledge": "black_box",
+          "delivery": "conversation",
+          "battery": "pmv2_blackbox_battery_v1",
+          "attack_id": "bb-pi-001"
+        },
+        "isolation": {
+          "run_id": "template-do-not-execute",
+          "config_ref": "planning/config.md"
+        },
+        "replication": {
+          "seed": 42,
+          "response_replicates": 1
+        }
+      },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+      "replay": {"batching": "user_turn_v1", "native_options": {}}
+      },
+      "environment": {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [
+            "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+            "AGENT_DECIDER_OLLAMA_BASE_URL",
+            "AGENT_DECIDER_TEMPERATURE",
+            "AGENT_DECIDER_TIMEOUT_SECONDS",
+            "LANGMEM_EMBEDDING_PROVIDER",
+            "LANGMEM_PROVIDER",
+            "LANGMEM_SQLITE_ROOT",
+            "LANGMEM_STORAGE_BACKEND",
+            "LANGMEM_TIMEOUT_SECONDS",
+            "OLLAMA_BASE_URL",
+            "RESPONDER_TOKENIZER_CACHE_DIR",
+            "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"
+        ]
+      }
+    },
+    {
+      "profile_id": "telemem-native-mistral-nemo",
+      "condition": {
+        "mechanism": "telemem",
+        "mechanism_version": "1.10.0",
+        "write_policy": "native_selective",
+        "mechanism_options": {
+          "infer": true,
+          "buffer_size": 64,
+          "similarity_threshold": 0.95,
+          "rerank": false
+        }
+      },
+      "execution_condition": {
+        "condition_id": "telemem-native-mistral-nemo",
+        "model_profile_id": "mistral-nemo-nomic-v1",
+        "manifest_template": {
+          "schema_version": 1,
+          "experiment_track": "blackbox_memory_poisoning",
+          "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+          },
+          "condition": {
+            "mechanism": "telemem",
+            "mechanism_version": "1.10.0",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+              "infer": true,
+              "buffer_size": 64,
+              "similarity_threshold": 0.95,
+              "rerank": false
+            }
+          },
+          "models": {
+            "writer": {
+              "provider": "ollama",
+              "model": "mistral-nemo:12b",
+              "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89"
+            },
+            "responder": {
+              "provider": "ollama",
+              "model": "mistral-nemo:12b",
+              "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89",
+              "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "mistralai/Mistral-Nemo-Instruct-2407",
+                "revision": "04d8a90549d23fc6bd7f642064003592df51e9b3",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+              }
+            },
+            "embedding": {
+              "provider": "ollama",
+              "model": "nomic-embed-text:137m-v1.5-fp16",
+              "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+              "dimensions": 768
+            }
+          },
+          "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+          },
+          "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+          },
+          "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+          },
+          "replication": {
+            "seed": 42,
+            "response_replicates": 1
+          }
+        },
+        "agent_configuration": {
+          "max_steps": 2,
+          "max_tool_calls": 1,
+          "retrieval_top_k": 5,
+          "retrieval_threshold": null,
+          "allowed_tools": ["simulate_send"],
+          "approval_required_tools": ["simulate_send"],
+          "context_token_budget": 2048,
+          "memory_read_only": true,
+          "allow_external_side_effects": false,
+          "stop_on_tool_error": true
+        },
+        "replay": {
+          "batching": "user_turn_v1",
+          "native_options": {}
+        }
+      },
+      "environment": {
+        "mechanism": "telemem", "python_executable": ".venvs/telemem/Scripts/python.exe", "module": "membench.agent", "working_directory": ".", "timeout_seconds": 1800, "inherited_env_keys": ["AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]
+      }
+    },
+    {
+      "profile_id": "telemem-direct-mistral-nemo",
+      "condition": {
+        "mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}
+      },
+      "execution_condition": {
+        "condition_id": "telemem-direct-mistral-nemo",
+        "model_profile_id": "mistral-nemo-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {"name": "personamem_v2", "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba", "subset": "blackbox_battery_v1"},
+            "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+            "models": {
+            "writer": {"provider": "ollama", "model": "mistral-nemo:12b", "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89"},
+            "responder": {"provider": "ollama", "model": "mistral-nemo:12b", "digest": "e7e06d107c6c86ed0cf45445f1790720b5092149c4c95f4d965844e9afbfdc89", "tokenizer": {"implementation": "huggingface_auto", "model_id": "mistralai/Mistral-Nemo-Instruct-2407", "revision": "04d8a90549d23fc6bd7f642064003592df51e9b3", "transformers_version": "4.57.6", "use_fast": true}},
+            "embedding": {"provider": "ollama", "model": "nomic-embed-text:137m-v1.5-fp16", "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f", "dimensions": 768}
+            },
+            "retrieval": {"top_k": 5, "threshold": null, "context_token_budget": 2048},
+            "attack": {"knowledge": "black_box", "delivery": "conversation", "battery": "pmv2_blackbox_battery_v1", "attack_id": "bb-pi-001"},
+            "isolation": {"run_id": "template-do-not-execute", "config_ref": "planning/config.md"},
+            "replication": {"seed": 42, "response_replicates": 1}
+        },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+      },
+      "environment": {
+        "mechanism": "telemem", "python_executable": ".venvs/telemem/Scripts/python.exe", "module": "membench.agent", "working_directory": ".", "timeout_seconds": 1800, "inherited_env_keys": ["AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]
+      }
+    },
+    {
+      "profile_id": "telemem-native-gptoss",
+      "condition": {
+        "mechanism": "telemem",
+        "mechanism_version": "1.10.0",
+        "write_policy": "native_selective",
+        "mechanism_options": {
+          "infer": true,
+          "buffer_size": 64,
+          "similarity_threshold": 0.95,
+          "rerank": false
+        }
+      },
+      "execution_condition": {
+        "condition_id": "telemem-native-gptoss",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+          "schema_version": 1,
+          "experiment_track": "blackbox_memory_poisoning",
+          "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+          },
+          "condition": {
+            "mechanism": "telemem",
+            "mechanism_version": "1.10.0",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+              "infer": true,
+              "buffer_size": 64,
+              "similarity_threshold": 0.95,
+              "rerank": false
+            }
+          },
+          "models": {
+            "writer": {
+              "provider": "ollama",
+              "model": "gpt-oss:20b",
+              "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+            },
+            "responder": {
+              "provider": "ollama",
+              "model": "gpt-oss:20b",
+              "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+              "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "openai/gpt-oss-20b",
+                "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+              }
+            },
+            "embedding": {
+              "provider": "ollama",
+              "model": "nomic-embed-text:137m-v1.5-fp16",
+              "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+              "dimensions": 768
+            }
+          },
+          "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+          },
+          "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+          },
+          "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+          },
+          "replication": {
+            "seed": 42,
+            "response_replicates": 1
+          }
+        },
+        "agent_configuration": {
+          "max_steps": 2,
+          "max_tool_calls": 1,
+          "retrieval_top_k": 5,
+          "retrieval_threshold": null,
+          "allowed_tools": ["simulate_send"],
+          "approval_required_tools": ["simulate_send"],
+          "context_token_budget": 2048,
+          "memory_read_only": true,
+          "allow_external_side_effects": false,
+          "stop_on_tool_error": true
+        },
+        "replay": {
+          "batching": "user_turn_v1",
+          "native_options": {}
+        }
+      },
+      "environment": {
+        "mechanism": "telemem",
+        "python_executable": ".venvs/telemem/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [ "AGENT_DECIDER_CAPTURE_RAW_RESPONSE", "AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_THINK", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]
+      }
+    },
+    {
+        "profile_id": "telemem-direct-gptoss",
+        "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+        "execution_condition" : {
+                
+        "condition_id": "telemem-direct-gptoss",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {"name": "personamem_v2", "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba", "subset": "blackbox_battery_v1"},
+            "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+            "models": {
+            "writer": {"provider": "ollama", "model": "gpt-oss:20b", "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"},
+            "responder": {"provider": "ollama", "model": "gpt-oss:20b", "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe", "tokenizer": {"implementation": "huggingface_auto", "model_id": "openai/gpt-oss-20b", "revision": "6cee5e81ee83917806bbde320786a8fb61efebee", "transformers_version": "4.57.6", "use_fast": true}},
+            "embedding": {"provider": "ollama", "model": "nomic-embed-text:137m-v1.5-fp16", "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f", "dimensions": 768}
+            },
+            "retrieval": {"top_k": 5, "threshold": null, "context_token_budget": 2048},
+            "attack": {"knowledge": "black_box", "delivery": "conversation", "battery": "pmv2_blackbox_battery_v1", "attack_id": "bb-pi-001"},
+            "isolation": {"run_id": "template-do-not-execute", "config_ref": "planning/config.md"},
+            "replication": {"seed": 42, "response_replicates": 1}
+        },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {"mechanism": "telemem", "python_executable": ".venvs/telemem/Scripts/python.exe", "module": "membench.agent", "working_directory": ".", "timeout_seconds": 1800, "inherited_env_keys": ["AGENT_DECIDER_CAPTURE_RAW_RESPONSE", "AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_THINK", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]}
+    },
+    {
+        "profile_id": "langmem-native-gptoss",
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "native_selective",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "execution_condition" : {
+        "condition_id": "langmem-native-gptoss",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+            },
+            "condition": {
+            "mechanism": "langmem",
+            "mechanism_version": "0.0.30",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+                "writer_implementation": "langmem_store_manager_v1",
+                "writer_version": "0.0.30",
+                "memory_types": [
+                "semantic"
+                ],
+                "procedural_prompt_optimization": false,
+                "storage_backend": "sqlite",
+                "enable_deletes": false,
+                "query_limit": 5,
+                "max_steps": 1,
+                "temperature": 0,
+                "seed": 42
+            }
+            },
+            "models": {
+            "writer": {
+                "provider": "ollama",
+                "model": "gpt-oss:20b",
+                "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+            },
+            "responder": {
+                "provider": "ollama",
+                "model": "gpt-oss:20b",
+                "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+                "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "openai/gpt-oss-20b",
+                "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+                }
+            },
+            "embedding": {
+                "provider": "ollama",
+                "model": "nomic-embed-text:137m-v1.5-fp16",
+                "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+                "dimensions": 768
+            }
+            },
+            "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+            },
+            "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+            },
+            "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+            },
+            "replication": {
+            "seed": 42,
+            "response_replicates": 1
+            }
+        },
+            "agent_configuration": {
+            "max_steps": 2,
+            "max_tool_calls": 1,
+            "retrieval_top_k": 5,
+            "retrieval_threshold": null,
+            "allowed_tools": ["simulate_send"],
+            "approval_required_tools": ["simulate_send"],
+            "context_token_budget": 2048,
+            "memory_read_only": true,
+            "allow_external_side_effects": false,
+            "stop_on_tool_error": true
+            },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [
+            "AGENT_DECIDER_CAPTURE_RAW_RESPONSE",
+            "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+            "AGENT_DECIDER_OLLAMA_BASE_URL",
+            "AGENT_DECIDER_TEMPERATURE",
+            "AGENT_DECIDER_THINK", 
+            "AGENT_DECIDER_TIMEOUT_SECONDS",
+            "LANGMEM_EMBEDDING_PROVIDER",
+            "LANGMEM_PROVIDER",
+            "LANGMEM_SQLITE_ROOT",
+            "LANGMEM_STORAGE_BACKEND",
+            "LANGMEM_TIMEOUT_SECONDS",
+            "OLLAMA_BASE_URL",
+            "RESPONDER_TOKENIZER_CACHE_DIR",
+            "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"  
+        ]
+        }
+    },
+    {
+      "profile_id": "langmem-direct-gptoss",
+      "condition": {
+        "mechanism": "langmem",
+        "mechanism_version": "0.0.30",
+        "write_policy": "direct",
+        "mechanism_options": {
+          "writer_implementation": "langmem_store_manager_v1",
+          "writer_version": "0.0.30",
+          "memory_types": [
+          "semantic"
+          ],
+          "procedural_prompt_optimization": false,
+          "storage_backend": "sqlite",
+          "enable_deletes": false,
+          "query_limit": 5,
+          "max_steps": 1,
+          "temperature": 0,
+          "seed": 42
+        }
+      },
+      "execution_condition": {
+      "condition_id": "langmem-direct-gptoss",
+      "model_profile_id": "gptoss-nomic-v1",
+      "manifest_template": {
+        "schema_version": 1,
+        "experiment_track": "blackbox_memory_poisoning",
+        "dataset": {
+          "name": "personamem_v2",
+          "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+          "subset": "blackbox_battery_v1"
+        },
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "direct",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "models": {
+          "writer": {
+            "provider": "ollama",
+            "model": "gpt-oss:20b",
+            "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+          },
+          "responder": {
+            "provider": "ollama",
+            "model": "gpt-oss:20b",
+            "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+            "tokenizer": {
+              "implementation": "huggingface_auto",
+              "model_id": "openai/gpt-oss-20b",
+              "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+              "transformers_version": "4.57.6",
+              "use_fast": true
+            }
+          },
+          "embedding": {
+            "provider": "ollama",
+            "model": "nomic-embed-text:137m-v1.5-fp16",
+            "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+            "dimensions": 768
+          }
+        },
+        "retrieval": {
+          "top_k": 5,
+          "threshold": null,
+          "context_token_budget": 2048
+        },
+        "attack": {
+          "knowledge": "black_box",
+          "delivery": "conversation",
+          "battery": "pmv2_blackbox_battery_v1",
+          "attack_id": "bb-pi-001"
+        },
+        "isolation": {
+          "run_id": "template-do-not-execute",
+          "config_ref": "planning/config.md"
+        },
+        "replication": {
+          "seed": 42,
+          "response_replicates": 1
+        }
+      },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+      "replay": {"batching": "user_turn_v1", "native_options": {}}
+    },
+    "environment": 
+        {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 1800,
+        "inherited_env_keys": [
+                "AGENT_DECIDER_CAPTURE_RAW_RESPONSE",
+                "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+                "AGENT_DECIDER_OLLAMA_BASE_URL",
+                "AGENT_DECIDER_TEMPERATURE",
+                "AGENT_DECIDER_THINK",
+                "AGENT_DECIDER_TIMEOUT_SECONDS",
+                "LANGMEM_EMBEDDING_PROVIDER",
+                "LANGMEM_PROVIDER",
+                "LANGMEM_SQLITE_ROOT",
+                "LANGMEM_STORAGE_BACKEND",
+                "LANGMEM_TIMEOUT_SECONDS",
+                "OLLAMA_BASE_URL",
+                "RESPONDER_TOKENIZER_CACHE_DIR",
+                "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"
+            ]
+        }
+
+    },
+    {
+      "profile_id": "telemem-native-gptoss-3600",
+      "condition": {
+        "mechanism": "telemem",
+        "mechanism_version": "1.10.0",
+        "write_policy": "native_selective",
+        "mechanism_options": {
+          "infer": true,
+          "buffer_size": 64,
+          "similarity_threshold": 0.95,
+          "rerank": false
+        }
+      },
+      "execution_condition": {
+        "condition_id": "telemem-native-gptoss-3600",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+          "schema_version": 1,
+          "experiment_track": "blackbox_memory_poisoning",
+          "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+          },
+          "condition": {
+            "mechanism": "telemem",
+            "mechanism_version": "1.10.0",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+              "infer": true,
+              "buffer_size": 64,
+              "similarity_threshold": 0.95,
+              "rerank": false
+            }
+          },
+          "models": {
+            "writer": {
+              "provider": "ollama",
+              "model": "gpt-oss:20b",
+              "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+            },
+            "responder": {
+              "provider": "ollama",
+              "model": "gpt-oss:20b",
+              "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+              "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "openai/gpt-oss-20b",
+                "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+              }
+            },
+            "embedding": {
+              "provider": "ollama",
+              "model": "nomic-embed-text:137m-v1.5-fp16",
+              "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+              "dimensions": 768
+            }
+          },
+          "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+          },
+          "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+          },
+          "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+          },
+          "replication": {
+            "seed": 42,
+            "response_replicates": 1
+          }
+        },
+        "agent_configuration": {
+          "max_steps": 2,
+          "max_tool_calls": 1,
+          "retrieval_top_k": 5,
+          "retrieval_threshold": null,
+          "allowed_tools": ["simulate_send"],
+          "approval_required_tools": ["simulate_send"],
+          "context_token_budget": 2048,
+          "memory_read_only": true,
+          "allow_external_side_effects": false,
+          "stop_on_tool_error": true
+        },
+        "replay": {
+          "batching": "user_turn_v1",
+          "native_options": {}
+        }
+      },
+      "environment": {
+        "mechanism": "telemem",
+        "python_executable": ".venvs/telemem/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 3600,
+        "inherited_env_keys": [ "AGENT_DECIDER_CAPTURE_RAW_RESPONSE", "AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_THINK", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]
+      }
+    },
+    {
+        "profile_id": "telemem-direct-gptoss-3600",
+        "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+        "execution_condition" : {
+                
+        "condition_id": "telemem-direct-gptoss-3600",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {"name": "personamem_v2", "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba", "subset": "blackbox_battery_v1"},
+            "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "direct", "mechanism_options": {"infer": false, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+            "models": {
+            "writer": {"provider": "ollama", "model": "gpt-oss:20b", "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"},
+            "responder": {"provider": "ollama", "model": "gpt-oss:20b", "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe", "tokenizer": {"implementation": "huggingface_auto", "model_id": "openai/gpt-oss-20b", "revision": "6cee5e81ee83917806bbde320786a8fb61efebee", "transformers_version": "4.57.6", "use_fast": true}},
+            "embedding": {"provider": "ollama", "model": "nomic-embed-text:137m-v1.5-fp16", "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f", "dimensions": 768}
+            },
+            "retrieval": {"top_k": 5, "threshold": null, "context_token_budget": 2048},
+            "attack": {"knowledge": "black_box", "delivery": "conversation", "battery": "pmv2_blackbox_battery_v1", "attack_id": "bb-pi-001"},
+            "isolation": {"run_id": "template-do-not-execute", "config_ref": "planning/config.md"},
+            "replication": {"seed": 42, "response_replicates": 1}
+        },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {"mechanism": "telemem", "python_executable": ".venvs/telemem/Scripts/python.exe", "module": "membench.agent", "working_directory": ".", "timeout_seconds": 3600, "inherited_env_keys": ["AGENT_DECIDER_CAPTURE_RAW_RESPONSE", "AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_THINK", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]}
+    },
+    {
+        "profile_id": "langmem-native-gptoss-7200",
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "native_selective",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "execution_condition" : {
+        "condition_id": "langmem-native-gptoss-7200",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+            },
+            "condition": {
+            "mechanism": "langmem",
+            "mechanism_version": "0.0.30",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+                "writer_implementation": "langmem_store_manager_v1",
+                "writer_version": "0.0.30",
+                "memory_types": [
+                "semantic"
+                ],
+                "procedural_prompt_optimization": false,
+                "storage_backend": "sqlite",
+                "enable_deletes": false,
+                "query_limit": 5,
+                "max_steps": 1,
+                "temperature": 0,
+                "seed": 42
+            }
+            },
+            "models": {
+            "writer": {
+                "provider": "ollama",
+                "model": "gpt-oss:20b",
+                "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+            },
+            "responder": {
+                "provider": "ollama",
+                "model": "gpt-oss:20b",
+                "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+                "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "openai/gpt-oss-20b",
+                "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+                }
+            },
+            "embedding": {
+                "provider": "ollama",
+                "model": "nomic-embed-text:137m-v1.5-fp16",
+                "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+                "dimensions": 768
+            }
+            },
+            "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+            },
+            "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+            },
+            "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+            },
+            "replication": {
+            "seed": 42,
+            "response_replicates": 1
+            }
+        },
+            "agent_configuration": {
+            "max_steps": 2,
+            "max_tool_calls": 1,
+            "retrieval_top_k": 5,
+            "retrieval_threshold": null,
+            "allowed_tools": ["simulate_send"],
+            "approval_required_tools": ["simulate_send"],
+            "context_token_budget": 2048,
+            "memory_read_only": true,
+            "allow_external_side_effects": false,
+            "stop_on_tool_error": true
+            },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 7200,
+        "inherited_env_keys": [
+            "AGENT_DECIDER_CAPTURE_RAW_RESPONSE",
+            "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+            "AGENT_DECIDER_OLLAMA_BASE_URL",
+            "AGENT_DECIDER_TEMPERATURE",
+            "AGENT_DECIDER_THINK", 
+            "AGENT_DECIDER_TIMEOUT_SECONDS",
+            "LANGMEM_EMBEDDING_PROVIDER",
+            "LANGMEM_PROVIDER",
+            "LANGMEM_SQLITE_ROOT",
+            "LANGMEM_STORAGE_BACKEND",
+            "LANGMEM_TIMEOUT_SECONDS",
+            "OLLAMA_BASE_URL",
+            "RESPONDER_TOKENIZER_CACHE_DIR",
+            "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"  
+        ]
+        }
+    },
+    {
+      "profile_id": "langmem-direct-gptoss-3600",
+      "condition": {
+        "mechanism": "langmem",
+        "mechanism_version": "0.0.30",
+        "write_policy": "direct",
+        "mechanism_options": {
+          "writer_implementation": "langmem_store_manager_v1",
+          "writer_version": "0.0.30",
+          "memory_types": [
+          "semantic"
+          ],
+          "procedural_prompt_optimization": false,
+          "storage_backend": "sqlite",
+          "enable_deletes": false,
+          "query_limit": 5,
+          "max_steps": 1,
+          "temperature": 0,
+          "seed": 42
+        }
+      },
+      "execution_condition": {
+      "condition_id": "langmem-direct-gptoss-3600",
+      "model_profile_id": "gptoss-nomic-v1",
+      "manifest_template": {
+        "schema_version": 1,
+        "experiment_track": "blackbox_memory_poisoning",
+        "dataset": {
+          "name": "personamem_v2",
+          "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+          "subset": "blackbox_battery_v1"
+        },
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "direct",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "models": {
+          "writer": {
+            "provider": "ollama",
+            "model": "gpt-oss:20b",
+            "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+          },
+          "responder": {
+            "provider": "ollama",
+            "model": "gpt-oss:20b",
+            "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+            "tokenizer": {
+              "implementation": "huggingface_auto",
+              "model_id": "openai/gpt-oss-20b",
+              "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+              "transformers_version": "4.57.6",
+              "use_fast": true
+            }
+          },
+          "embedding": {
+            "provider": "ollama",
+            "model": "nomic-embed-text:137m-v1.5-fp16",
+            "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+            "dimensions": 768
+          }
+        },
+        "retrieval": {
+          "top_k": 5,
+          "threshold": null,
+          "context_token_budget": 2048
+        },
+        "attack": {
+          "knowledge": "black_box",
+          "delivery": "conversation",
+          "battery": "pmv2_blackbox_battery_v1",
+          "attack_id": "bb-pi-001"
+        },
+        "isolation": {
+          "run_id": "template-do-not-execute",
+          "config_ref": "planning/config.md"
+        },
+        "replication": {
+          "seed": 42,
+          "response_replicates": 1
+        }
+      },
+        "agent_configuration": {
+        "max_steps": 2,
+        "max_tool_calls": 1,
+        "retrieval_top_k": 5,
+        "retrieval_threshold": null,
+        "allowed_tools": ["simulate_send"],
+        "approval_required_tools": ["simulate_send"],
+        "context_token_budget": 2048,
+        "memory_read_only": true,
+        "allow_external_side_effects": false,
+        "stop_on_tool_error": true
+        },
+      "replay": {"batching": "user_turn_v1", "native_options": {}}
+    },
+    "environment": 
+        {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 3600,
+        "inherited_env_keys": [
+                "AGENT_DECIDER_CAPTURE_RAW_RESPONSE",
+                "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+                "AGENT_DECIDER_OLLAMA_BASE_URL",
+                "AGENT_DECIDER_TEMPERATURE",
+                "AGENT_DECIDER_THINK",
+                "AGENT_DECIDER_TIMEOUT_SECONDS",
+                "LANGMEM_EMBEDDING_PROVIDER",
+                "LANGMEM_PROVIDER",
+                "LANGMEM_SQLITE_ROOT",
+                "LANGMEM_STORAGE_BACKEND",
+                "LANGMEM_TIMEOUT_SECONDS",
+                "OLLAMA_BASE_URL",
+                "RESPONDER_TOKENIZER_CACHE_DIR",
+                "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"
+            ]
+        }
+
+    },
+    {
+        "profile_id": "langmem-native-gptoss-7200-no-tool",
+        "condition": {
+          "mechanism": "langmem",
+          "mechanism_version": "0.0.30",
+          "write_policy": "native_selective",
+          "mechanism_options": {
+            "writer_implementation": "langmem_store_manager_v1",
+            "writer_version": "0.0.30",
+            "memory_types": [
+            "semantic"
+            ],
+            "procedural_prompt_optimization": false,
+            "storage_backend": "sqlite",
+            "enable_deletes": false,
+            "query_limit": 5,
+            "max_steps": 1,
+            "temperature": 0,
+            "seed": 42
+          }
+        },
+        "execution_condition" : {
+        "condition_id": "langmem-native-gptoss-7200-no-tool",
+        "model_profile_id": "gptoss-nomic-v1",
+        "manifest_template": {
+            "schema_version": 1,
+            "experiment_track": "blackbox_memory_poisoning",
+            "dataset": {
+            "name": "personamem_v2",
+            "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba",
+            "subset": "blackbox_battery_v1"
+            },
+            "condition": {
+            "mechanism": "langmem",
+            "mechanism_version": "0.0.30",
+            "write_policy": "native_selective",
+            "mechanism_options": {
+                "writer_implementation": "langmem_store_manager_v1",
+                "writer_version": "0.0.30",
+                "memory_types": [
+                "semantic"
+                ],
+                "procedural_prompt_optimization": false,
+                "storage_backend": "sqlite",
+                "enable_deletes": false,
+                "query_limit": 5,
+                "max_steps": 1,
+                "temperature": 0,
+                "seed": 42
+            }
+            },
+            "models": {
+            "writer": {
+                "provider": "ollama",
+                "model": "gpt-oss:20b",
+                "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe"
+            },
+            "responder": {
+                "provider": "ollama",
+                "model": "gpt-oss:20b",
+                "digest": "f38aa0c53da5f8c49d08c43a99df24ff53167fe68e24664a7777288e7656fdfe",
+                "tokenizer": {
+                "implementation": "huggingface_auto",
+                "model_id": "openai/gpt-oss-20b",
+                "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                "transformers_version": "4.57.6",
+                "use_fast": true
+                }
+            },
+            "embedding": {
+                "provider": "ollama",
+                "model": "nomic-embed-text:137m-v1.5-fp16",
+                "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+                "dimensions": 768
+            }
+            },
+            "retrieval": {
+            "top_k": 5,
+            "threshold": null,
+            "context_token_budget": 2048
+            },
+            "attack": {
+            "knowledge": "black_box",
+            "delivery": "conversation",
+            "battery": "pmv2_blackbox_battery_v1",
+            "attack_id": "bb-pi-001"
+            },
+            "isolation": {
+            "run_id": "template-do-not-execute",
+            "config_ref": "planning/config.md"
+            },
+            "replication": {
+            "seed": 42,
+            "response_replicates": 1
+            }
+        },
+            "agent_configuration": {
+            "max_steps": 1,
+            "max_tool_calls": 0,
+            "retrieval_top_k": 5,
+            "retrieval_threshold": null,
+            "allowed_tools": [],
+            "approval_required_tools": [],
+            "context_token_budget": 2048,
+            "memory_read_only": true,
+            "allow_external_side_effects": false,
+            "stop_on_tool_error": true
+            },
+        "replay": {"batching": "user_turn_v1", "native_options": {}}
+        },
+        "environment": {
+        "mechanism": "langmem",
+        "python_executable": ".venvs/langgraph/Scripts/python.exe",
+        "module": "membench.agent",
+        "working_directory": ".",
+        "timeout_seconds": 7200,
+        "inherited_env_keys": [
+            "AGENT_DECIDER_CAPTURE_RAW_RESPONSE",
+            "AGENT_DECIDER_MAX_OUTPUT_TOKENS",
+            "AGENT_DECIDER_OLLAMA_BASE_URL",
+            "AGENT_DECIDER_TEMPERATURE",
+            "AGENT_DECIDER_THINK", 
+            "AGENT_DECIDER_TIMEOUT_SECONDS",
+            "LANGMEM_EMBEDDING_PROVIDER",
+            "LANGMEM_PROVIDER",
+            "LANGMEM_SQLITE_ROOT",
+            "LANGMEM_STORAGE_BACKEND",
+            "LANGMEM_TIMEOUT_SECONDS",
+            "OLLAMA_BASE_URL",
+            "RESPONDER_TOKENIZER_CACHE_DIR",
+            "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY"  
+        ]
+        }
+    }
+  ]
+}

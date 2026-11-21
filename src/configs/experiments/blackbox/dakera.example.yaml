@@ -1,0 +1,57 @@
+schema_version: 1
+experiment_track: blackbox_memory_poisoning
+
+dataset:
+  name: personamem_v2
+  revision: ed956dea41521fc4499acbc63f966e0fd3c053ba
+  subset: blackbox_battery_v1
+
+condition:
+  mechanism: dakera
+  mechanism_version: 0.11.107
+  write_policy: direct
+  mechanism_options:
+    sdk_version: 0.12.12
+    server_image: ghcr.io/dakera-ai/dakera@sha256:00caa29c818c0706a031ddb6cdfe3580ced4b8f056543a7925256012a3be54bc
+    memory_type: semantic
+    importance: 0.5
+    routing: vector
+    rerank: false
+    neighborhood: false
+    include_associated: false
+    ttl_seconds: null
+
+models:
+  # Dakera's current public API owns its internal memory representation. These
+  # are explicit nulls so the manifest does not claim unused external models.
+  writer: null
+  # Its digest is resolved from Ollama before an executable run is accepted.
+  responder:
+    provider: ollama
+    model: "qwen2.5:7b"
+    tokenizer:
+      implementation: huggingface_auto
+      model_id: Qwen/Qwen2.5-7B-Instruct
+      revision: a09a35458c702b33eeacc393d103063234e8bc28
+      transformers_version: 4.57.6
+      use_fast: true
+  embedding: null
+
+retrieval:
+  top_k: 5
+  threshold: null
+  context_token_budget: 2048
+
+attack:
+  knowledge: black_box
+  delivery: conversation
+  battery: pmv2_blackbox_battery_v1
+  attack_id: bb-pi-001
+
+isolation:
+  run_id: dakera-example-do-not-execute
+  config_ref: planning/config.md
+
+replication:
+  seed: 20260831
+  response_replicates: 1

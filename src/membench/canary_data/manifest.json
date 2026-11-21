@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "suite_id": "common_adapter_qualification",
+  "suite_version": "1.1.0",
+  "canaries": [
+    {
+      "canary_id": "semantic_preference_v1",
+      "path": "canaries/semantic_preference_v1.json",
+      "sha256": "0ac682f8b2d37c99a39c43f410c74998aca4924a313e24b278b908bc14def3b8"
+    },
+    {
+      "canary_id": "episodic_event_v1",
+      "path": "canaries/episodic_event_v1.json",
+      "sha256": "a9ddc0eeae85cbeb96080982404e817a7c695d55a06fd3909a5c42bd2396c489"
+    },
+    {
+      "canary_id": "procedural_rule_v1",
+      "path": "canaries/procedural_rule_v1.json",
+      "sha256": "618e485412b2d56af3e5ec853c67c1085213d39142693a627b6bd70356f988ed"
+    },
+    {
+      "canary_id": "isolation_marker_v1",
+      "path": "canaries/isolation_marker_v1.json",
+      "sha256": "750db0b6587daf4afb127a28ee34244e37138259b4a8a76145584556a90a8d0e"
+    },
+    {
+      "canary_id": "guard_injection_v1",
+      "path": "canaries/guard_injection_v1.json",
+      "sha256": "339bd71cf41214c15918cba9dfdf8a09f280851e1a15911d35409cd09417c94e"
+    }
+  ],
+  "qualifications": [
+    {
+      "qualification_id": "baseline_semantic_v1",
+      "description": "Common benign semantic write, visibility, retrieval, inspection, and reset qualification.",
+      "canary_ids": ["semantic_preference_v1"],
+      "supported_policies": ["direct", "native_selective"],
+      "required_capabilities": ["semantic_memory"],
+      "requires_secondary_scope": false,
+      "requires_guard": false
+    },
+    {
+      "qualification_id": "namespace_isolation_v1",
+      "description": "Direct-write qualification proving primary and secondary scopes cannot observe each other's markers.",
+      "canary_ids": ["semantic_preference_v1", "isolation_marker_v1"],
+      "supported_policies": ["direct"],
+      "required_capabilities": ["direct_write", "semantic_memory"],
+      "requires_secondary_scope": true,
+      "requires_guard": false
+    },
+    {
+      "qualification_id": "shared_guard_admission_v1",
+      "description": "Shared guard must admit a benign preference and reject or quarantine an untrusted instruction.",
+      "canary_ids": ["semantic_preference_v1", "guard_injection_v1"],
+      "supported_policies": ["shared_guarded"],
+      "required_capabilities": ["direct_write", "semantic_memory"],
+      "requires_secondary_scope": false,
+      "requires_guard": true
+    },
+    {
+      "qualification_id": "memory_family_surface_v1",
+      "description": "Optional direct-write coverage for semantic, episodic, and procedural memory families.",
+      "canary_ids": ["semantic_preference_v1", "episodic_event_v1", "procedural_rule_v1"],
+      "supported_policies": ["direct"],
+      "required_capabilities": ["direct_write", "semantic_memory", "episodic_memory", "procedural_memory"],
+      "requires_secondary_scope": false,
+      "requires_guard": false
+    },
+    {
+      "qualification_id": "responder_read_only_v1",
+      "description": "Assemble exact retrieved context, generate a response, and prove retrieval and response leave memory unchanged.",
+      "canary_ids": ["semantic_preference_v1"],
+      "supported_policies": ["direct", "native_selective"],
+      "required_capabilities": ["semantic_memory"],
+      "requires_secondary_scope": false,
+      "requires_guard": false,
+      "requires_responder": true
+    }
+  ]
+}

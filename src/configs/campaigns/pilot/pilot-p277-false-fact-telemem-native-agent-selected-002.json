@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "campaign_id": "pilot-p277-false-fact-telemem-native-agent-selected-002",
+  "projection_directory": "data/blackbox/neutral-external-hosts-v1",
+  "tool_fixture_path": "configs/fixtures/p277-external-tools-v1.json",
+  "evaluation_probe_path": "configs/evaluation_probes/p277-false-fact-v2.json",
+  "external_ingress": {
+    "external_artifact_directory": "artifacts/p277-false-fact-v2-frozen-001",
+    "ingress_plan_set_id": "p277-false-fact-v2-agent-selected",
+    "ingress_mode": "agent_selected",
+    "selection_agent_configuration": {"max_steps": 4, "max_tool_calls": 2, "retrieval_top_k": 5, "retrieval_threshold": null, "allowed_tools": ["read_message", "search_messages"], "approval_required_tools": [], "context_token_budget": 2048, "memory_read_only": true, "allow_external_side_effects": false, "stop_on_tool_error": true},
+    "host_trial_ids": {
+      "alloc-external-false-fact-277-001--clean": "alloc-neutral-external-host-277-001--clean",
+      "alloc-external-false-fact-277-001--matched-benign": "alloc-neutral-external-host-277-001--matched-benign",
+      "alloc-external-false-fact-277-001--poisoned": "alloc-neutral-external-host-277-001--poisoned"
+    }
+  },
+  "case_ids": ["alloc-neutral-external-host-277-001"],
+  "conditions": [
+    {
+      "condition_id": "telemem-native-qwen25",
+      "model_profile_id": "qwen25-nomic-v1",
+      "manifest_template": {
+        "schema_version": 1,
+        "experiment_track": "blackbox_memory_poisoning",
+        "dataset": {"name": "personamem_v2", "revision": "ed956dea41521fc4499acbc63f966e0fd3c053ba", "subset": "blackbox_battery_v1"},
+        "condition": {"mechanism": "telemem", "mechanism_version": "1.10.0", "write_policy": "native_selective", "mechanism_options": {"infer": true, "buffer_size": 64, "similarity_threshold": 0.95, "rerank": false}},
+        "models": {
+          "writer": {"provider": "ollama", "model": "qwen2.5:7b", "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"},
+          "responder": {"provider": "ollama", "model": "qwen2.5:7b", "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e", "tokenizer": {"implementation": "huggingface_auto", "model_id": "Qwen/Qwen2.5-7B-Instruct", "revision": "a09a35458c702b33eeacc393d103063234e8bc28", "transformers_version": "4.57.6", "use_fast": true}},
+          "embedding": {"provider": "ollama", "model": "nomic-embed-text:137m-v1.5-fp16", "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f", "dimensions": 768}
+        },
+        "retrieval": {"top_k": 5, "threshold": null, "context_token_budget": 2048},
+        "attack": {"knowledge": "black_box", "delivery": "conversation", "battery": "pmv2_blackbox_battery_v1", "attack_id": "bb-pi-001"},
+        "isolation": {"run_id": "template-do-not-execute", "config_ref": "planning/config.md"},
+        "replication": {"seed": 42, "response_replicates": 1}
+      },
+      "agent_configuration": {"max_steps": 1, "max_tool_calls": 0, "retrieval_top_k": 5, "retrieval_threshold": null, "allowed_tools": [], "approval_required_tools": [], "context_token_budget": 2048, "memory_read_only": true, "allow_external_side_effects": false, "stop_on_tool_error": true},
+      "replay": {"batching": "user_turn_v1", "native_options": {}}
+    }
+  ],
+  "environments": [
+    {"mechanism": "telemem", "python_executable": ".venvs/telemem/Scripts/python.exe", "module": "membench.agent", "working_directory": ".", "timeout_seconds": 1800, "inherited_env_keys": ["AGENT_DECIDER_MAX_OUTPUT_TOKENS", "AGENT_DECIDER_OLLAMA_BASE_URL", "AGENT_DECIDER_TEMPERATURE", "AGENT_DECIDER_TIMEOUT_SECONDS", "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_OPENAI_BASE_URL", "RESPONDER_TOKENIZER_CACHE_DIR", "RESPONDER_TOKENIZER_LOCAL_FILES_ONLY", "TELEMEM_POLL_INTERVAL_SECONDS", "TELEMEM_PROVIDER", "TELEMEM_STORAGE_ROOT", "TELEMEM_VISIBILITY_TIMEOUT_SECONDS"]}
+  ],
+  "seed": 42,
+  "response_replicates": 1,
+  "purpose": "pilot",
+  "cleanup_storage": true,
+  "artifact_root": "artifacts/campaigns/pilot-p277-false-fact-telemem-native-agent-selected-002",
+  "max_parallel_children": 1,
+  "fail_fast": false
+}
