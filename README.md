@@ -13,7 +13,11 @@ external sources such as synthetic email.
 No experiment sends real messages or performs real external writes. Behavioral
 tests use allowlisted mock tools and a sealed simulated outbox.
 
-## What the benchmark measures
+## Author 
+Luis Pedro Montenegro<br>
+carnet: 21699
+
+## What it measures
 
 Each attack is evaluated as a sequence of increasingly strong outcomes:
 
@@ -41,6 +45,11 @@ Every case is normally executed as three isolated twins:
 
 The twins share the same benign replay and configuration. Only the frozen
 external delivery or conversation overlay differs.
+
+## Demo
+<video width="900" height="800" controls>
+  <source src="demo/demo.mp4" type="video/mp4">
+</video>
 
 ## Architecture
 
@@ -237,8 +246,12 @@ the persona, attack variants, ingress boundary, evaluation markers, and conditio
 matrix.
 
 1. Select or copy a scenario under `configs/scenarios/`.
+![scenario](capturas/captura1.png)
 2. Select condition profile IDs from
    `configs/scenario_condition_profiles.json`.
+![scenario profile](capturas/captura2.png)
+![scenario profile2](capturas/captura3.png)
+![scenario profile3](capturas/captura4.png)
 3. Configure `ScenarioGeneratedCampaignSources` in `main.py`:
    - the matching fixture;
    - a new generated-input directory;
@@ -262,12 +275,16 @@ uv run membench campaign run `
   --json
 ```
 
+![main.py](capturas/captura5.png)
+
 The generated scenario runner currently supports `forced_ingestion`. Use an
 explicit campaign configuration for existing agent-selected ingress studies.
 
 Generated input, external artifact, and campaign directories must be new. The
 builders intentionally refuse to overwrite frozen evidence. Use a new suffix for
 each rerun rather than editing an existing artifact directory.
+
+
 
 ### Behavioral stored-instruction scenarios
 
@@ -278,10 +295,15 @@ behavioral_task_path=Path("configs/behavioral_tasks/<task>.json")
 behavioral_oracle_path=Path("configs/behavioral_oracles/<oracle>.json")
 ```
 
+![behavioral task](capturas/captura6.png)
+![behavioral oracle](capturas/captura7.png)
+
 Retrieval-only stored-instruction scenarios may omit both. Such runs can measure
 injection and retrieval, but they cannot establish behavioral attack success.
 
 ## Running an explicit campaign configuration
+
+
 
 Existing JSON campaign documents can be prepared and run directly:
 
@@ -323,6 +345,8 @@ directory instead.
 
 ## Results and evidence
 
+![artifacts](capturas/captura8.png)
+
 Completed campaign roots contain:
 
 - `campaign_result.json`: child execution outcomes;
@@ -343,11 +367,15 @@ Important child artifacts include:
 - `outbox-snapshot.json`;
 - `provenance.json` and `reset.json`.
 
+![analysis](capturas/captura9.png)
+
 An empty retrieval-marker hit list means the marker was not returned by that
 specific frozen query. It does not, by itself, prove that the value was absent
 from memory; inspect the complete post-ingress state evidence as well.
 
 ## Reproducing PersonaMem-v2 dataset curation
+
+![persona](capturas/captura10.png)
 
 The curation pipeline is deterministic once the upstream revision, seed,
 selection policy, and manual review decisions are fixed.
@@ -564,4 +592,4 @@ do not repair immutable artifacts in place.
 All external sources, contacts, documents, recipients, and tool actions are
 synthetic. `simulate_send` records an evaluator-only outbox item and never
 contacts a real service. Keep `allow_external_side_effects` disabled for this
-benchmark.
+matter.
